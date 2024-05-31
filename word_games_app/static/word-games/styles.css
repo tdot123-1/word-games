@@ -1,0 +1,38 @@
+.navbar-nav a {
+    color: white;
+}
+
+.dark-blue-bg {
+    background-color: #000080;
+}
+
+.luckiest-guy-regular {
+    font-family: "Luckiest Guy", cursive;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.custom-outlined-text {
+    color: #D3D3D3; 
+    text-shadow:
+        -1px -1px 0 #000080,
+         1px -1px 0 #000080,
+        -1px  1px 0 #000080,
+         1px  1px 0 #000080; 
+}
+
+
+.custom-btn {
+    color: #000080; 
+    background-color: white; 
+    border-color: #000080; 
+    margin: 0 3px;
+}
+
+.custom-btn:hover {
+    background-color: #000080; 
+    border-color: #000080; 
+    color: white;
+}
+
+  

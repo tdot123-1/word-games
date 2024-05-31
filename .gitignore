@@ -1,0 +1,6 @@
+*.db
+__pychache__/
+/word_games_app/__pychache__/
+*.pyc 
+*.env
+myenv/

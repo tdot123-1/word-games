@@ -1,0 +1,69 @@
+{% extends "word-games/layout.html" %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row justify-content-center align-items-center" style="height:75vh;">
+        <div class="col text-center">
+            <h1 class="luckiest-guy-regular custom-outlined-text">Word Games</h1>
+            <p>Welcome to WordGames! Test your English vocabulary skills with 3 challenging games.<br>
+            Below you will find explanations to each game, log in or sign up to start playing.<br>
+            Check the high scores to find out who was able to get the best results for each game, try to improve and reach the top.<br>
+            </p>
+            <div class="accordion accordion-flush" id="myAccordionFlush">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                            Word Guess
+                        </button>
+                    </h2>
+                    <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#myAccordionFlush">
+                        <div class="accordion-body">
+                        In this game you have 6 guesses to try and find a 5-letter word.<br>
+                        Each guess must be a valid English word. If you guess a letter in its correct position, it will turn green.<br>
+                        If you guess a letter in the word but in the incorrect position, it will turn yellow.
+                        When you manage to guess the word, you earn points.<br>
+                        The fewer guesses it took you, the more points you earn!
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                            Word Search
+                        </button>
+                    </h2>
+                    <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#myAccordionFlush">
+                        <div class="accordion-body">
+                            For this game the goal is to find as many words as you can within one minute.<br>
+                            When you click the start button, a collection of random letters will appear on the board and the timer will start running.
+                            Submit as many words as you can find into the field below, using only the letters you see on screen.
+                            After one minute has passed, your points will be counted up.<br>
+                            To earn a point, make sure you only use the letters you see on screen.
+                            Only valid English words with at least 4 letters will be counted.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                            Word Rush
+                        </button>
+                    </h2>
+                    <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#myAccordionFlush">
+                        <div class="accordion-body">
+                            In this game you try to make as many unique 5-letter words as you can.<br>
+                            Start by typing your first word in the input field, then press start to begin the game.
+                            When you submit a word using the start button, one letter will be frozen in place.<br>
+                            Now it's up to you to make the next word using this frozen letter.
+                            Only valid 5-letter English words are accepted.<br>
+                            You have 90 seconds to form as many unique words as you can. Each word earns you 1 point.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
