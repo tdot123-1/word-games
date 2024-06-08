@@ -1,0 +1,85 @@
+{% extends "word-games/layout.html" %}
+
+{% block body %}
+<div class="container-fluid game-page">
+    <div class="row page-header">
+        <div class="col">
+            <h1 class="luckiest-guy-regular custom-outlined-text">WordGuess</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center custom-rules-box">
+        <div class="col">
+            <button type="button" class="custom-btn-dimensions btn custom-btn luckiest-guy-regular custom-center" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="Guess the Word" data-bs-content="You have 6 guesses to try and find a 5-letter word. Each guess must be a valid English word. If you guess a letter in its correct position, it will turn green. If you guess a letter in the word but in the incorrect position, it will turn yellow. Good luck!">
+                How does it work?
+            </button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="custom-word-container luckiest-guy-regular" id="guess-cont-1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="custom-word-container luckiest-guy-regular" id="guess-cont-2">
+            <input type="text" class="custom-square-input guess-2" maxlength="1">
+            <input type="text" class="custom-square-input guess-2" maxlength="1">
+            <input type="text" class="custom-square-input guess-2" maxlength="1">
+            <input type="text" class="custom-square-input guess-2" maxlength="1">
+            <input type="text" class="custom-square-input guess-2" maxlength="1">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="custom-word-container luckiest-guy-regular" id="guess-cont-3" >
+            <input type="text" class="custom-square-input guess-3" maxlength="1">
+            <input type="text" class="custom-square-input guess-3" maxlength="1">
+            <input type="text" class="custom-square-input guess-3" maxlength="1">
+            <input type="text" class="custom-square-input guess-3" maxlength="1">
+            <input type="text" class="custom-square-input guess-3" maxlength="1">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="custom-word-container luckiest-guy-regular" id="guess-cont-4">
+            <input type="text" class="custom-square-input guess-4" maxlength="1">
+            <input type="text" class="custom-square-input guess-4" maxlength="1">
+            <input type="text" class="custom-square-input guess-4" maxlength="1">
+            <input type="text" class="custom-square-input guess-4" maxlength="1">
+            <input type="text" class="custom-square-input guess-4" maxlength="1">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="custom-word-container luckiest-guy-regular" id="guess-cont-5">
+            <input type="text" class="custom-square-input guess-5" maxlength="1">
+            <input type="text" class="custom-square-input guess-5" maxlength="1">
+            <input type="text" class="custom-square-input guess-5" maxlength="1">
+            <input type="text" class="custom-square-input guess-5" maxlength="1">
+            <input type="text" class="custom-square-input guess-5" maxlength="1">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="custom-word-container luckiest-guy-regular" id="guess-cont-6">
+            <input type="text" class="custom-square-input guess-6" maxlength="1">
+            <input type="text" class="custom-square-input guess-6" maxlength="1">
+            <input type="text" class="custom-square-input guess-6" maxlength="1">
+            <input type="text" class="custom-square-input guess-6" maxlength="1">
+            <input type="text" class="custom-square-input guess-6" maxlength="1">
+        </div>
+    </div>
+    <div id="end-cont" style="text-align: center">
+        <h4 id="end-msg" class="luckiest-guy-regular custom-outlined-text"></h4>
+    </div>
+    <div id="guess-btn-div" class="row justify-content-center">
+      <button id="guess-btn" class="custom-btn-dimensions btn custom-btn custom-margin luckiest-guy-regular" type="button">
+        <span id="spinner" class="spinner-border spinner-border-sm" aria-hidden="true" style="visibility: hidden"></span>
+        <span class="visually-hidden" role="status">Loading...</span>
+        Guess
+        <span class="spinner-border spinner-border-sm" aria-hidden="true" style="visibility: hidden"></span>
+      </button>
+    </div>
+</div>
+
+<script type="module" src="{{ url_for('static', filename='word-games/js/test.js') }}"></script>
+{% endblock %}

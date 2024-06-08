@@ -83,6 +83,49 @@ body {
     margin: 2.5rem 0 0;
 }
 
+.custom-rules-box {
+    margin-bottom: 2rem;
+}
+
+.custom-rules-box > div {
+    display: flex;
+    justify-content: center;
+}
+
+.game-page h1 {
+    font-size: 4rem;
+}
+
+.custom-rules-box .custom-btn-dimensions {
+    width: auto;
+}
+
+.custom-square-input {
+    max-width: calc(20% - 3px);
+    margin: 0 0.7px 1.5px;
+    background-color: #D3D3D3;
+    aspect-ratio: 1 / 1;
+    border: none;
+    text-align: center;
+    font-size: 3rem;
+    color: #000080;
+    border-radius: 15px;
+}
+
+.custom-word-container {
+    display: flex;
+    justify-content: center;
+}
+
+.game-page {
+    margin-bottom: 2rem;
+}
+
+#guess-btn-div > button {
+    width: 75%;
+    margin-top: 1rem;
+}
+
 
 @media screen and (min-width: 768px) {
     
@@ -113,5 +156,14 @@ body {
     .login-form button {
         margin: 1.2rem 0 0;
     }
+
+    .custom-word-container {
+        width: 60%;
+    }
+
+    #guess-btn-div > button {
+        width: 50%;
+    }
+
 }
   
