@@ -13,3 +13,10 @@ def index():
     return render_template("word-games/index.html", user=current_user)
 
 
+# word rush
+# word search
+# word guess
+
+# high scores
+
+

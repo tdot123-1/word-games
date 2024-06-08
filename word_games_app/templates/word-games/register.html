@@ -2,17 +2,17 @@
 
 {% block body %}
 <div class="container-fluid">
-    <div class="row">
+    <div class="row page-header">
         <div class="col">
-            <h1 class="luckiest-guy-regular custom-outlined-text">Sign up to play Word Games</h1>
+            <h1 class="luckiest-guy-regular custom-outlined-text">Sign up to play WordGames</h1>
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-sm-8 col-lg-6">
-            <form class="custom-border" method="POST">
+            <form class="custom-border login-form" method="POST">
               <div class="mb-3">
                 <label for="username" class="form-label luckiest-guy-regular" style="color: #000080">Username</label>
-                <input type="text" class="form-control" id="username" name="username" aria-describedby="usernameHelp1">
+                <input autofocus type="text" class="form-control" id="username" name="username" aria-describedby="usernameHelp1">
                 <div id="usernameHelp1" class="form-text">
                   Your username must be 3-10 characters long, and must not contain spaces or special characters.
                 </div>
@@ -28,8 +28,9 @@
                 <label for="password2" class="form-label luckiest-guy-regular" style="color: #000080">Confirm password</label>
                 <input type="password" class="form-control" id="password2" name="password2">
               </div>
-              <button type="submit" class="btn custom-btn luckiest-guy-regular">Register</button>
+              <button type="submit" class="custom-btn-dimensions btn custom-btn luckiest-guy-regular">Register</button>
             </form>
+            <p>Already have an account? <a href="/login">Log in!</a></p>
         </div>
     </div>
 </div>
