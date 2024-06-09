@@ -1,4 +1,6 @@
 import os
+from PyDictionary import PyDictionary
+
 
 def key_generator():
     key = os.urandom(24)
@@ -40,3 +42,12 @@ def validate_registration(password1, password2, username):
         errors.append("Password cannot contain special characters")
 
     return errors
+
+
+def word_exists(word):
+    dictionary = PyDictionary()
+    meaning = dictionary.meaning(word)
+    if meaning is not None:
+        return True
+
+    return False

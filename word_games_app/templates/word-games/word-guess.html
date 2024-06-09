@@ -71,15 +71,17 @@
     <div id="end-cont" style="text-align: center">
         <h4 id="end-msg" class="luckiest-guy-regular custom-outlined-text"></h4>
     </div>
+    <div id="loading-spinner" class="justify-content-center loading-spinner">
+        <div class="spinner-border" role="status" style="color: #000080">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
     <div id="guess-btn-div" class="row justify-content-center">
       <button id="guess-btn" class="custom-btn-dimensions btn custom-btn custom-margin luckiest-guy-regular" type="button">
-        <span id="spinner" class="spinner-border spinner-border-sm" aria-hidden="true" style="visibility: hidden"></span>
-        <span class="visually-hidden" role="status">Loading...</span>
         Guess
-        <span class="spinner-border spinner-border-sm" aria-hidden="true" style="visibility: hidden"></span>
       </button>
     </div>
 </div>
 
-<script type="module" src="{{ url_for('static', filename='word-games/js/test.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='word-games/js/word-guess.js') }}"></script>
 {% endblock %}
