@@ -126,6 +126,16 @@ body {
     margin-top: 1rem;
 }
 
+.fade-in-green {
+    transition: background-color 0.5s ease-in-out;
+    background-color: #90EE90;
+}
+
+.fade-in-yellow {
+    transition: background-color 0.5s ease-in-out;
+    background-color: #fcf4a3;
+}
+
 
 @media screen and (min-width: 768px) {
     

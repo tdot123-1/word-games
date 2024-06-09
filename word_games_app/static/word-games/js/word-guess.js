@@ -32,9 +32,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let gameEnd = false;
     let dataResend = false;
 
-    // randomly select password from list of words, (?) convert to array (?)
+    // randomly select password from list of words, 
     const password = listOfWords[Math.floor(Math.random() * listOfWords.length)];
     console.log(password);
+    const passwordArr = password.split("");
 
     // hide all input squares at start of game, display only first line
     const squares = document.querySelectorAll('.custom-word-container');
@@ -42,12 +43,162 @@ document.addEventListener("DOMContentLoaded", () => {
         square.style.display = 'none';
     });
 
+
+    // handle letter input
+    function handleInput(inputArr, inputField, inputIndex) {
+
+        let letterInput = inputField.value;
+        if (!/^[a-zA-Z^]*$/.test(letterInput)) {
+            inputField.value = "";
+        }
+        else {
+            if (inputIndex < inputArr.length - 1) {
+                inputArr[inputIndex + 1].focus();
+            } 
+        }
+    }
+
     // next guess
-        // display container by id
-        // add event listener to each indiv square 
+    function nextTurn() {
+        guessCount += 1;
+        points -= 5;
+
+        if (guessCount > 1) {
+            document.querySelectorAll(`.guess-${guessCount - 1}`).forEach(input => {
+                input.removeEventListener("input", handleInput);
+            });
+        }
+
+        const nextGuess = document.querySelectorAll(`.guess-${guessCount}`);
+        document.querySelector(`#guess-cont-${guessCount}`).style.display = "flex";
+
+        nextGuess.forEach((input, index) => {
+            input.addEventListener("input", () => {
+                handleInput(nextGuess, input, index);
+            });
+        });
+        nextGuess[0].focus();
+        scrollPage("bottom");
+        return;
+    }
+
+
+    function checkWin(passwordArrObj) {
+        for(let i = 0; i < passwordArrObj.length; i += 1) {
+            if (passwordArrObj[i].correctPos === false) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    function checkCorrectLetters(guessArr, guessNodeList, passwordArrObj) {
+
+        guessArr.forEach((letter, letterIndex) => {
+            if (letter === passwordArrObj[letterIndex].letter) {
+                guessNodeList[letterIndex].classList.add("fade-in-green");
+                passwordArrObj[letterIndex].correctPos = true;
+                passwordArrObj[letterIndex].guessed = true;
+            }
+        });
+
+        return passwordArrObj;
+    }
+
+
+    function checkCorrectGuess(guessArr, guessNodeList, passwordArrObj) {
+        guessArr.forEach((letter, letterIndex) => {
+            for (let i = 0; i < passwordArrObj.length; i++) {
+                if (letter === passwordArrObj[i].letter && !passwordArrObj[i].correctPos && !passwordArrObj[i].guessed) {
+                    if (!guessNodeList[letterIndex].classList.contains("fade-in-green")) {
+                        guessNodeList[letterIndex].classList.add("fade-in-yellow");
+                    }
+                    passwordArrObj[i].guessed = true;
+                    break;                  
+                }
+            }
+        });
+    }
+
+
+    async function processGuess(guessStr, guessArr, guessNodeList, passwordArrObj) {
+        try {
+            const validWord = await checkWordValidity(guessStr, "wordGuess", "/check-word-validity");
+            // spinner
+            loadingSpinner.style.display = "none"
+            // button
+            guessBtn.disabled = false;
+            if (!validWord) {
+                guessNodeList.forEach(inputField => {
+                    inputField.value = "";
+                    inputField.disabled = false;
+                });
+                guessNodeList[0].focus();
+                return;
+            }
+            // check correct letters
+            passwordArrObj = checkCorrectLetters(guessArr, guessNodeList, passwordArrObj);
+            if (checkWin(passwordArrObj)) {
+                console.log("game over, win");
+                console.log("points: ", points);
+                gameEnd = true;
+                // game over -> send data
+                return;
+            }
+            checkCorrectGuess(guessArr, guessNodeList, passwordArrObj);
+            if (guessCount === 6) {
+                console.log("game over, loss")
+                gameEnd = true;
+                // game over -> send data
+                return;
+            }
+            nextTurn();
+            return;
+        }
+        catch (error) {
+            console.log("Error: ", error);
+            displayFlashMessage("There was an error", "danger");
+        }
+    }
+
+    nextTurn();
 
     guessBtn.addEventListener("click", () => {
-        console.log("buttom clicked")
+        // on button click, display spinner, disable btn, get input
+        console.log("button clicked");
+        guessBtn.disabled = true;
+        loadingSpinner.style.display = "flex";
+        const currentGuessInput = document.querySelectorAll(`.guess-${guessCount}`);
+
+        // set new array to keep track of which letter has been guessed
+        const passwordArrObj = [];
+        passwordArr.forEach(letter => {
+            passwordArrObj.push({
+                "letter": letter,
+                "guessed": false,
+                "correctPos": false,
+            });
+        });
+        
+        // get array from input nodeList, set to lowercase, create string from array
+        const currentGuessArr = [];
+        currentGuessInput.forEach(input => {
+            currentGuessArr.push(input.value.toLowerCase());
+        });
+        // use string to check validity of word
+        const currentGuessStr = currentGuessArr.join("");
+        // disable all input fields
+        currentGuessInput.forEach(inputField => {
+            inputField.disabled = true;
+        });
+
+        // start verification process
+        processGuess(currentGuessStr, currentGuessArr, currentGuessInput, passwordArrObj);
+
     });
+
+
+
 
 });
