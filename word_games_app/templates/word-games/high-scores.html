@@ -1,0 +1,13 @@
+{% extends "word-games/layout.html" %}
+
+{% block body %}
+
+<div>
+    {% for row in scores %}
+        <p>{{ row.user }}</p>
+        <p>{{ row.hs_guess }}</p>
+        <p>{{ row.total_points }}</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

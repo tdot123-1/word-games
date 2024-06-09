@@ -19,6 +19,11 @@ def index():
 def word_guess():
     return render_template("word-games/word-guess.html", user=current_user)
 
+
+@views.route("/high-scores")
+def high_scores():
+    scores = Scores.query.all()
+    return render_template("word-games/high-scores.html", user=current_user, scores=scores)
 # word rush
 
 # word guess
@@ -27,7 +32,6 @@ def word_guess():
 @views.route("/update-game-data", methods=["POST"])
 def update_game_data():
 
-    total_points = 5
     data = request.json
     if data is None:
         return jsonify({"message": "Invalid JSON",
@@ -35,12 +39,28 @@ def update_game_data():
     
     points = data.get("points")
     game = data.get("game")
+    user_id = data.get("userId")
 
     try:
-        total_points += int(points)
+        points = int(points)
     except ValueError:
-        return  jsonify({"message": "Error updating points",
-                         "category": "warning"})
+        return jsonify({"message": "error recasting points datatype",
+                        "category": "danger"})
+
+    score_entry = Scores.query.filter_by(user_id=user_id).first()
+
+    if not score_entry:
+        return jsonify({"message": "error retrieving user",
+                        "category": "danger"})
+    
+    score_entry.total_points += points
+
+    if game == "wordGuess":
+        if points > score_entry.hs_guess: 
+            score_entry.hs_guess = points
+    
+    db.session.commit()
+    
     
     return jsonify({"message": f"Stats for {game} updated succesfully",
                     "category": "success"})

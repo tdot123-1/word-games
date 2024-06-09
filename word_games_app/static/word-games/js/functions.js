@@ -7,7 +7,7 @@ export function hello() {
 }
 
 // update game statistics in db
-export async function sendGameData(points, game, endpoint) {
+export async function sendGameData(points, game, endpoint, userId) {
     
     try {
         const response = await fetch(endpoint, {
@@ -15,15 +15,18 @@ export async function sendGameData(points, game, endpoint) {
            headers: {
             "Content-Type": "application/json",
            },
-           body: JSON.stringify({"points": points, "game": game}), 
+           body: JSON.stringify({"points": points, "game": game, "userId": userId}), 
         });
         const result = await response.json();
-        console.log("Success: ", result.message);
-        displayFlashMessage(result.message, result.category)
+        console.log("server response: ", result.message);
+        if (result.category === "success") {
+            return true;
+        }
     }
     catch (error) {
         console.log("Error: ", error);
     }
+    return false;
 }
 
 

@@ -31,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let points = 35;
     let gameEnd = false;
     let dataResend = false;
+    let gameWon = false;
 
     // randomly select password from list of words, 
     const password = listOfWords[Math.floor(Math.random() * listOfWords.length)];
@@ -109,13 +110,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function checkCorrectGuess(guessArr, guessNodeList, passwordArrObj) {
         guessArr.forEach((letter, letterIndex) => {
-            for (let i = 0; i < passwordArrObj.length; i++) {
-                if (letter === passwordArrObj[i].letter && !passwordArrObj[i].correctPos && !passwordArrObj[i].guessed) {
-                    if (!guessNodeList[letterIndex].classList.contains("fade-in-green")) {
+            if (!guessNodeList[letterIndex].classList.contains("fade-in-green")) {
+                for (let i = 0; i < passwordArrObj.length; i++) {
+                    if (letter === passwordArrObj[i].letter && passwordArrObj[i].correctPos === false && passwordArrObj[i].guessed === false) {
+                        
                         guessNodeList[letterIndex].classList.add("fade-in-yellow");
+                        
+                        passwordArrObj[i].guessed = true;
+                        break;                  
                     }
-                    passwordArrObj[i].guessed = true;
-                    break;                  
                 }
             }
         });
@@ -144,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("points: ", points);
                 gameEnd = true;
                 // game over -> send data
+                gameOver(gameEnd);
                 return;
             }
             checkCorrectGuess(guessArr, guessNodeList, passwordArrObj);
@@ -151,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.log("game over, loss")
                 gameEnd = true;
                 // game over -> send data
+                gameOver(gameEnd);
                 return;
             }
             nextTurn();
@@ -162,9 +167,50 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+
+    async function gameOver(win) {
+        
+        guessBtn.disabled = true;
+        gameEnd = true;
+        
+        if (win) {
+            loadingSpinner.style.display = "flex";
+            guessBtn.innerHTML = "Updating high scores...";
+            try {
+                const statsUpdated = await sendGameData(points, "wordGuess", "/update-game-data", userId);
+                loadingSpinner.style.display = "none";
+                guessBtn.disabled = false;
+                if (!statsUpdated) {
+                    dataResend = true;
+                    guessBtn.innerHTML = "retry sending data";
+                    return;
+                }
+                
+            }
+            catch (error) {
+                console.log("Error: ", error);
+                dataResend = true;
+                guessBtn.innerHTML = "retry sending data";
+                return;
+            }
+        }
+        guessBtn.disabled = false;
+        guessBtn.innerHTML = "Play again?";  
+    }
+
     nextTurn();
 
     guessBtn.addEventListener("click", () => {
+        
+        if (gameEnd && !dataResend) {
+            location.reload();
+            return;
+        }
+        else if (dataResend) {
+            dataResend = false;
+            gameOver(gameWon);
+            return;
+        }
         // on button click, display spinner, disable btn, get input
         console.log("button clicked");
         guessBtn.disabled = true;
@@ -197,8 +243,5 @@ document.addEventListener("DOMContentLoaded", () => {
         processGuess(currentGuessStr, currentGuessArr, currentGuessInput, passwordArrObj);
 
     });
-
-
-
 
 });
