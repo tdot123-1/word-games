@@ -22,7 +22,13 @@ def word_guess():
 
 @views.route("/high-scores")
 def high_scores():
-    scores = Scores.query.all()
+    scores = db.session.query(
+        User.username,
+        Scores.total_points,
+        Scores.hs_search,
+        Scores.hs_guess,
+        Scores.hs_rush,
+    ).join(Scores, User.id == Scores.user_id).all()
     return render_template("word-games/high-scores.html", user=current_user, scores=scores)
 
 

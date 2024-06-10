@@ -2,12 +2,47 @@
 
 {% block body %}
 
-<div>
-    {% for row in scores %}
-        <p>{{ row.user }}</p>
-        <p>{{ row.hs_guess }}</p>
-        <p>{{ row.total_points }}</p>
-    {% endfor %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col page-header custom-outlined-text luckiest-guy-regular">
+            <div class="high-scores-header">
+                <div></div>
+                <h1>HighScores</h1>
+                <button type="button" class="custom-btn-dimensions btn custom-btn luckiest-guy-regular" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="View your scores" data-bs-content="The table below displays the total amount of points earned for every game played in the 'total points' column. The next three columns display the most amount of points earned in a single game for each game. Click on the title for any game to sort the table by high scores for that specific game.">
+                    ?
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col">
+            <table id="high-scores-table" class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col" class="luckiest-guy-regular">Player</th>
+                        <th scope="col" class="luckiest-guy-regular">Total Points</th>
+                        <th scope="col" class="luckiest-guy-regular">Word Guess</th>
+                        <th scope="col" class="luckiest-guy-regular">Word Rush</th>
+                        <th scope="col" class="luckiest-guy-regular">Word Search</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in scores | sort(attribute="total_points", reverse=True) %}
+                    <tr>
+                        <th scope="row">{{ loop.index }}</th>
+                        <td>{{ row.username }}</td>
+                        <td>{{ row.total_points }}</td>
+                        <td>{{ row.hs_guess }}</td>
+                        <td>{{ row.hs_rush }}</td>
+                        <td>{{ row.hs_search }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
+
 
 {% endblock %}

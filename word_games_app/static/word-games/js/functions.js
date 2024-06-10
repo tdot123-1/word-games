@@ -143,7 +143,7 @@ export class GameState {
                 this.playBtn.disabled = false;
                 if (!statsUpdated) {
                     this.resendData = true;
-                    this.playBtn = "retry sending data";
+                    this.playBtn.innerHTML = "retry sending data";
                     return;
                 }
             }
