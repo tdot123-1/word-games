@@ -21,10 +21,10 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col" class="luckiest-guy-regular">Player</th>
-                        <th scope="col" class="luckiest-guy-regular">Total Points</th>
-                        <th scope="col" class="luckiest-guy-regular">Word Guess</th>
-                        <th scope="col" class="luckiest-guy-regular">Word Rush</th>
-                        <th scope="col" class="luckiest-guy-regular">Word Search</th>
+                        <th scope="col" id="total_points" class="t-head luckiest-guy-regular">Total Points</th>
+                        <th scope="col" id="hs_guess" class="t-head luckiest-guy-regular">Word Guess</th>
+                        <th scope="col" id="hs_rush" class="t-head luckiest-guy-regular">Word Rush</th>
+                        <th scope="col" id="hs_search" class="t-head luckiest-guy-regular">Word Search</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,6 +43,9 @@
         </div>
     </div>
 </div>
-
+<script>
+    const userId = "{{ user.id }}"
+</script>
+<script type="module" src="{{ url_for('static', filename='word-games/js/high-scores.js') }}"></script>
 
 {% endblock %}

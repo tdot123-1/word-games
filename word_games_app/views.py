@@ -3,6 +3,7 @@
 from flask import Blueprint, render_template, url_for, request, jsonify
 from flask_login import login_required, current_user
 from .models import User, Scores
+from sqlalchemy import desc
 from . import db
 from utils import word_exists
 
@@ -22,14 +23,38 @@ def word_guess():
 
 @views.route("/high-scores")
 def high_scores():
+
+    column = request.args.get("column")
+    valid_columns = {
+        "total_points": Scores.total_points,
+        "hs_search": Scores.hs_search,
+        "hs_guess": Scores.hs_guess,
+        "hs_rush": Scores.hs_rush,
+    }
+
+    sort_column = valid_columns.get(column, Scores.total_points)
+
     scores = db.session.query(
         User.username,
         Scores.total_points,
         Scores.hs_search,
         Scores.hs_guess,
         Scores.hs_rush,
-    ).join(Scores, User.id == Scores.user_id).all()
+    ).join(Scores, User.id == Scores.user_id).order_by(desc(sort_column)).all()
+
+    if column is not None:
+        sorted_data = [{
+            "username": row.username,
+            "total_points": row.total_points,
+            "hs_search": row.hs_search,
+            "hs_guess": row.hs_guess,
+            "hs_rush": row.hs_rush,
+        } for row in scores]
+        return jsonify(sorted_data)
+
     return render_template("word-games/high-scores.html", user=current_user, scores=scores)
+
+
 
 
 # update high scores

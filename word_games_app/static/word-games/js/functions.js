@@ -6,6 +6,8 @@ export function hello() {
     return "Hello world";
 }
 
+///// add the 'throw new error' conditions ////////////////
+
 // update game statistics in db
 export async function sendGameData(points, game, userId) {
     // send data back to server, wait for response
@@ -17,6 +19,10 @@ export async function sendGameData(points, game, userId) {
            },
            body: JSON.stringify({"points": points, "game": game, "userId": userId}), 
         });
+
+        if (!response.ok) {
+            throw new Error("HTTP error: ", response.status);
+        }
         const result = await response.json();
         console.log("server response: ", result.message);
         // return true if result was succesfull
@@ -102,6 +108,10 @@ export async function checkWordValidity(word, game, endpoint) {
             },
             body: JSON.stringify({"word": word, "game": game}), 
         });
+
+        if (!response.ok) {
+            throw new Error("HTTP error: ", response.status);
+        }
         const result = await response.json();
         console.log(result.message);
         if (result.category !== "success") {
