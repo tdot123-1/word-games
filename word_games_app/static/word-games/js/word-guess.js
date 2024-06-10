@@ -4,6 +4,7 @@ import {
     initPopover,
     scrollPage,
     checkWordValidity,
+    GameState,
  } from "./functions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -11,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const popover = initPopover();
 
     const loadingSpinner = document.getElementById("loading-spinner");
-    const guessBtn = document.getElementById("guess-btn");
+    const playBtn = document.getElementById("guess-btn");
     loadingSpinner.style.display = "none";
 
     const listOfWords = [ 
@@ -28,16 +29,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ];
 
     let guessCount = 0;
-    let points = 35;
-    let gameEnd = false;
-    let dataResend = false;
-    let gameWon = false;
 
-    const gameState = {
-        "ended": false,
-        "won": false,
-        "resendData": false,
-    }
+    // create instance to keep track of game state
+    const gameState = new GameState("wordGuess", 35, playBtn, loadingSpinner, userId)
 
     // randomly select password from list of words, 
     // get array from password string to use later
@@ -71,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function nextTurn() {
         // start of new turn, add to guess count, remove points
         guessCount += 1;
-        points -= 5;
+        gameState.points -= 5;
         // remove previous event listeners
         if (guessCount > 1) {
             document.querySelectorAll(`.guess-${guessCount - 1}`).forEach(input => {
@@ -148,8 +142,8 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const validWord = await checkWordValidity(guessStr, "wordGuess", "/check-word-validity");
             // hide spinner, enable btn after validity check
-            loadingSpinner.style.display = "none"
-            guessBtn.disabled = false;
+            gameState.spinner.style.display = "none";
+            gameState.playBtn.disabled = false;
             // if word was invalid, empty input fields, enable fields, set focus, return
             if (!validWord) {
                 guessNodeList.forEach(inputField => {
@@ -164,10 +158,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (checkWin(passwordArrObj)) {
                 console.log("game over, win");
                 console.log("points: ", points);
-                gameEnd = true;
-                gameWon = true;
+                gameState.won = true;
                 // game over -> send points data
-                gameOver(gameWon);
+                gameState.gameOver()
                 return;
             }
             // check correct guessed letters in wrong position
@@ -175,8 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
             // at 6 guesses, game over
             if (guessCount === 6) {
                 console.log("game over, loss")
-                gameEnd = true;
-                gameOver(gameWon);
+                gameState.gameOver();
                 return;
             }
             // start next turn
@@ -190,59 +182,24 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-
-    // end of game, send game data if necessary
-    async function gameOver(win) {
-        // disable button
-        guessBtn.disabled = true;
-        gameEnd = true;
-        // if win is true, show spinner while data is being processed
-        if (win) {
-            loadingSpinner.style.display = "flex";
-            guessBtn.innerHTML = "Updating high scores...";
-            try {
-                // hide spinner, enable btn after server response
-                const statsUpdated = await sendGameData(points, "wordGuess", "/update-game-data", userId);
-                loadingSpinner.style.display = "none";
-                guessBtn.disabled = false;
-                // if there was a problem with server response, set button to re-send on click
-                if (!statsUpdated) {
-                    dataResend = true;
-                    guessBtn.innerHTML = "retry sending data";
-                    return;
-                }
-            // log error, update btn in case of error
-            }
-            catch (error) {
-                console.log("Error: ", error);
-                dataResend = true;
-                guessBtn.innerHTML = "retry sending data";
-                return;
-            }
-        }
-        // if everything went well, or if win was false, set button to replay on click
-        guessBtn.disabled = false;
-        guessBtn.innerHTML = "Play again?";  
-    }
-
     // display first line of input fields at start of game
     nextTurn();
 
-    guessBtn.addEventListener("click", () => {
+    gameState.playBtn.addEventListener("click", () => {
         // change button functionality depending on game context
-        if (gameEnd && !dataResend) {
+        if (gameState.ended && !gameState.resendData) {
             location.reload();
             return;
         }
-        else if (dataResend) {
-            dataResend = false;
-            gameOver(gameWon);
+        else if (gameState.resendData) {
+            gameState.resendData = false;
+            gameState.gameOver();
             return;
         }
         // on button click, display spinner, disable btn, get input
         console.log("button clicked");
-        guessBtn.disabled = true;
-        loadingSpinner.style.display = "flex";
+        gameState.playBtn.disabled = true;
+        gameState.spinner.style.display = "flex";
         const currentGuessInput = document.querySelectorAll(`.guess-${guessCount}`);
 
         // set new array to keep track of which letter has been guessed

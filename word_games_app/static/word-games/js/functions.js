@@ -7,10 +7,10 @@ export function hello() {
 }
 
 // update game statistics in db
-export async function sendGameData(points, game, endpoint, userId) {
+export async function sendGameData(points, game, userId) {
     // send data back to server, wait for response
     try {
-        const response = await fetch(endpoint, {
+        const response = await fetch("/update-game-data", {
            method: "POST",
            headers: {
             "Content-Type": "application/json",
@@ -116,5 +116,45 @@ export async function checkWordValidity(word, game, endpoint) {
     }
     finally {
         return valid;
+    }
+}
+
+
+export class GameState {
+    constructor(gameName, points, playBtn, spinner, userId) {
+        this.gameName = gameName;
+        this.ended = false;
+        this.won = false;
+        this.resendData = false;
+        this.points = points;
+        this.playBtn = playBtn;
+        this.spinner = spinner;
+        this.userId = userId;
+    }
+
+    async gameOver() {
+        this.ended = true;
+        this.playBtn.disabled = true;
+        if (this.won) {
+            this.spinner.style.display = "flex";
+            try {
+                const statsUpdated = await sendGameData(this.points, this.gameName, this.userId);
+                this.spinner.style.display = "none";
+                this.playBtn.disabled = false;
+                if (!statsUpdated) {
+                    this.resendData = true;
+                    this.playBtn = "retry sending data";
+                    return;
+                }
+            }
+            catch (error) {
+                console.log("Error: ", error);
+                this.resendData = true;
+                this.playBtn.innerHTML = "retry sending data";
+                return;
+            }
+        }
+        this.playBtn.disabled = false;
+        this.playBtn.innerHTML = "play again?";
     }
 }
