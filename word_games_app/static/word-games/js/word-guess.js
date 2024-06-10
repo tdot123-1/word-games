@@ -157,7 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
             passwordArrObj = checkCorrectLetters(guessArr, guessNodeList, passwordArrObj);
             if (checkWin(passwordArrObj)) {
                 console.log("game over, win");
-                console.log("points: ", points);
+                console.log("points: ", gameState.points);
                 gameState.won = true;
                 // game over -> send points data
                 gameState.gameOver()
