@@ -33,7 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
     let dataResend = false;
     let gameWon = false;
 
+    const gameState = {
+        "ended": false,
+        "won": false,
+        "resendData": false,
+    }
+
     // randomly select password from list of words, 
+    // get array from password string to use later
     const password = listOfWords[Math.floor(Math.random() * listOfWords.length)];
     console.log(password);
     const passwordArr = password.split("");
@@ -47,11 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // handle letter input
     function handleInput(inputArr, inputField, inputIndex) {
-
+        // check if input is a letter
         let letterInput = inputField.value;
         if (!/^[a-zA-Z^]*$/.test(letterInput)) {
             inputField.value = "";
         }
+        // move focus to next input field
         else {
             if (inputIndex < inputArr.length - 1) {
                 inputArr[inputIndex + 1].focus();
@@ -61,29 +69,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // next guess
     function nextTurn() {
+        // start of new turn, add to guess count, remove points
         guessCount += 1;
         points -= 5;
-
+        // remove previous event listeners
         if (guessCount > 1) {
             document.querySelectorAll(`.guess-${guessCount - 1}`).forEach(input => {
                 input.removeEventListener("input", handleInput);
             });
         }
-
+        // select + reveal next input fields
         const nextGuess = document.querySelectorAll(`.guess-${guessCount}`);
         document.querySelector(`#guess-cont-${guessCount}`).style.display = "flex";
-
+        // add eventlistener to input fields
         nextGuess.forEach((input, index) => {
             input.addEventListener("input", () => {
                 handleInput(nextGuess, input, index);
             });
         });
+        // set focus, scroll to bottom
         nextGuess[0].focus();
         scrollPage("bottom");
         return;
     }
 
 
+    // for each object in password array, check 'correct position' property
+    // if any is false, return false
     function checkWin(passwordArrObj) {
         for(let i = 0; i < passwordArrObj.length; i += 1) {
             if (passwordArrObj[i].correctPos === false) {
@@ -94,8 +106,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    // check for correct guessed letters in correct position
     function checkCorrectLetters(guessArr, guessNodeList, passwordArrObj) {
 
+        // for each letter in guess array, compare to pw object letter property
+        // add class, update properties on match (to keep track of already guessed letters) 
         guessArr.forEach((letter, letterIndex) => {
             if (letter === passwordArrObj[letterIndex].letter) {
                 guessNodeList[letterIndex].classList.add("fade-in-green");
@@ -103,19 +118,23 @@ document.addEventListener("DOMContentLoaded", () => {
                 passwordArrObj[letterIndex].guessed = true;
             }
         });
-
         return passwordArrObj;
     }
 
 
+    // check correct guessed letters in wrong position
     function checkCorrectGuess(guessArr, guessNodeList, passwordArrObj) {
+        // iterate over each letter in guess array, keeping track of index
         guessArr.forEach((letter, letterIndex) => {
+            // make sure not to overwrite previously correct guessed letters
             if (!guessNodeList[letterIndex].classList.contains("fade-in-green")) {
+                // for each letter in guess array, compare to each letter in pw array
                 for (let i = 0; i < passwordArrObj.length; i++) {
+                    // if guessed letter exists in pw, and properties are false -> add yellow class, set "guessed" property to true
                     if (letter === passwordArrObj[i].letter && passwordArrObj[i].correctPos === false && passwordArrObj[i].guessed === false) {
                         
                         guessNodeList[letterIndex].classList.add("fade-in-yellow");
-                        
+                        // break out of inner loop
                         passwordArrObj[i].guessed = true;
                         break;                  
                     }
@@ -128,10 +147,10 @@ document.addEventListener("DOMContentLoaded", () => {
     async function processGuess(guessStr, guessArr, guessNodeList, passwordArrObj) {
         try {
             const validWord = await checkWordValidity(guessStr, "wordGuess", "/check-word-validity");
-            // spinner
+            // hide spinner, enable btn after validity check
             loadingSpinner.style.display = "none"
-            // button
             guessBtn.disabled = false;
+            // if word was invalid, empty input fields, enable fields, set focus, return
             if (!validWord) {
                 guessNodeList.forEach(inputField => {
                     inputField.value = "";
@@ -140,52 +159,59 @@ document.addEventListener("DOMContentLoaded", () => {
                 guessNodeList[0].focus();
                 return;
             }
-            // check correct letters
+            // check correct letters in correct position
             passwordArrObj = checkCorrectLetters(guessArr, guessNodeList, passwordArrObj);
             if (checkWin(passwordArrObj)) {
                 console.log("game over, win");
                 console.log("points: ", points);
                 gameEnd = true;
-                // game over -> send data
-                gameOver(gameEnd);
+                gameWon = true;
+                // game over -> send points data
+                gameOver(gameWon);
                 return;
             }
+            // check correct guessed letters in wrong position
             checkCorrectGuess(guessArr, guessNodeList, passwordArrObj);
+            // at 6 guesses, game over
             if (guessCount === 6) {
                 console.log("game over, loss")
                 gameEnd = true;
-                // game over -> send data
-                gameOver(gameEnd);
+                gameOver(gameWon);
                 return;
             }
+            // start next turn
             nextTurn();
             return;
         }
+        // flash message if there was an error
         catch (error) {
             console.log("Error: ", error);
-            displayFlashMessage("There was an error", "danger");
+            displayFlashMessage(`There was an error: ${error}`, "danger");
         }
     }
 
 
+    // end of game, send game data if necessary
     async function gameOver(win) {
-        
+        // disable button
         guessBtn.disabled = true;
         gameEnd = true;
-        
+        // if win is true, show spinner while data is being processed
         if (win) {
             loadingSpinner.style.display = "flex";
             guessBtn.innerHTML = "Updating high scores...";
             try {
+                // hide spinner, enable btn after server response
                 const statsUpdated = await sendGameData(points, "wordGuess", "/update-game-data", userId);
                 loadingSpinner.style.display = "none";
                 guessBtn.disabled = false;
+                // if there was a problem with server response, set button to re-send on click
                 if (!statsUpdated) {
                     dataResend = true;
                     guessBtn.innerHTML = "retry sending data";
                     return;
                 }
-                
+            // log error, update btn in case of error
             }
             catch (error) {
                 console.log("Error: ", error);
@@ -194,14 +220,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
         }
+        // if everything went well, or if win was false, set button to replay on click
         guessBtn.disabled = false;
         guessBtn.innerHTML = "Play again?";  
     }
 
+    // display first line of input fields at start of game
     nextTurn();
 
     guessBtn.addEventListener("click", () => {
-        
+        // change button functionality depending on game context
         if (gameEnd && !dataResend) {
             location.reload();
             return;

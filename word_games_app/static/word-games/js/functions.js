@@ -8,7 +8,7 @@ export function hello() {
 
 // update game statistics in db
 export async function sendGameData(points, game, endpoint, userId) {
-    
+    // send data back to server, wait for response
     try {
         const response = await fetch(endpoint, {
            method: "POST",
@@ -19,6 +19,7 @@ export async function sendGameData(points, game, endpoint, userId) {
         });
         const result = await response.json();
         console.log("server response: ", result.message);
+        // return true if result was succesfull
         if (result.category === "success") {
             return true;
         }

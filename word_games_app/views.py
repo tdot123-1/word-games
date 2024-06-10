@@ -24,11 +24,9 @@ def word_guess():
 def high_scores():
     scores = Scores.query.all()
     return render_template("word-games/high-scores.html", user=current_user, scores=scores)
-# word rush
 
-# word guess
 
-# high scores
+# update high scores
 @views.route("/update-game-data", methods=["POST"])
 def update_game_data():
 
