@@ -1,12 +1,3 @@
-export function add(a, b) {
-    return a + b;
-}
-
-export function hello() {
-    return "Hello world";
-}
-
-///// add the 'throw new error' conditions ////////////////
 
 // update game statistics in db
 export async function sendGameData(points, game, userId) {
@@ -130,6 +121,7 @@ export async function checkWordValidity(word, game, endpoint) {
 }
 
 
+// save properties that all games will share in one class
 export class GameState {
     constructor(gameName, points, playBtn, spinner, userId) {
         this.gameName = gameName;
@@ -142,15 +134,19 @@ export class GameState {
         this.userId = userId;
     }
 
+    // game over proces will be the same across games
     async gameOver() {
+        // game ended and play button disabled
         this.ended = true;
         this.playBtn.disabled = true;
         if (this.won) {
+            // show spinner if stats need to be updated
             this.spinner.style.display = "flex";
             try {
                 const statsUpdated = await sendGameData(this.points, this.gameName, this.userId);
                 this.spinner.style.display = "none";
                 this.playBtn.disabled = false;
+                // if something went wrong, change button to try re sending data
                 if (!statsUpdated) {
                     this.resendData = true;
                     this.playBtn.innerHTML = "retry sending data";
@@ -164,6 +160,7 @@ export class GameState {
                 return;
             }
         }
+        // if stats don't need to be updated, set up button accordingly
         this.playBtn.disabled = false;
         this.playBtn.innerHTML = "play again?";
     }

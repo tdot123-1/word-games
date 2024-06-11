@@ -1,24 +1,25 @@
 import { initPopover, } from "./functions.js";
 
 document.addEventListener("DOMContentLoaded", () => {
-
+    // initialize bootstrap component
     initPopover();
-
+    // select clickable table heads, table body content
     const tableHeads = document.querySelectorAll(".t-head");
-
     const tableBody = document.querySelector("tbody");
 
     async function sortBy(column) {
         try {
+            // send clicked column back to server to perform sorting query there
             const response = await fetch(`/high-scores?column=${column}`);
             
-            // update the contents of tbody
             if (!response.ok) {
                 throw new Error(`HTTP error: ${response.status}`);
             }
+            // receive sorted rows in json format
             const data = await response.json();
+            
+            // empty table body, then add each row from received data
             tableBody.innerHTML = "";
-
             data.forEach((user, index) => {
                 const row = `
                 <tr>
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-
+    // add event listener to each clickable table head
     tableHeads.forEach(header => {
         header.addEventListener("click", () => {
             sortBy(header.id);

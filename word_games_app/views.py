@@ -23,17 +23,20 @@ def word_guess():
 
 @views.route("/high-scores")
 def high_scores():
-
+    # get arg if user clicked a column to sort
     column = request.args.get("column")
+    # keep dict of valid columns, in case user tried to manually type a column
     valid_columns = {
         "total_points": Scores.total_points,
         "hs_search": Scores.hs_search,
         "hs_guess": Scores.hs_guess,
         "hs_rush": Scores.hs_rush,
     }
-
+    
+    # try to get the selected column if it is valid, else sort by total points
     sort_column = valid_columns.get(column, Scores.total_points)
 
+    # query scores sorted by column
     scores = db.session.query(
         User.username,
         Scores.total_points,
@@ -42,6 +45,7 @@ def high_scores():
         Scores.hs_rush,
     ).join(Scores, User.id == Scores.user_id).order_by(desc(sort_column)).all()
 
+    # if a column was selected, return sorted data in json
     if column is not None:
         sorted_data = [{
             "username": row.username,
