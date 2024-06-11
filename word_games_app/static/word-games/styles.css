@@ -162,6 +162,11 @@ table {
     width: 4rem;
 }
 
+.t-head:hover {
+    cursor: pointer;
+    text-shadow: #000080 1px 0 10px;
+}
+
 
 @media screen and (min-width: 768px) {
     
