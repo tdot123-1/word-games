@@ -21,6 +21,12 @@ def word_guess():
     return render_template("word-games/word-guess.html", user=current_user)
 
 
+@views.route("/word-rush")
+def word_rush():
+    return render_template("word-games/word-rush.html", user=current_user)
+
+
+
 @views.route("/high-scores")
 def high_scores():
     # get arg if user clicked a column to sort
@@ -57,8 +63,6 @@ def high_scores():
         return jsonify(sorted_data)
 
     return render_template("word-games/high-scores.html", user=current_user, scores=scores)
-
-
 
 
 # update high scores

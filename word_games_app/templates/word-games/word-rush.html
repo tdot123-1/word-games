@@ -1,0 +1,45 @@
+{% extends "word-games/layout.html" %}
+
+{% block body %}
+<div class="container-fluid game-page">
+    <div class="row page-header">
+        <div class="col">
+            <h1 class="luckiest-guy-regular custom-outlined-text">WordRush</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center custom-rules-box">
+        <div class="col">
+            <button type="button" class="custom-btn-dimensions btn custom-btn luckiest-guy-regular custom-center" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="Guess the Word" data-bs-content="Try to make as many unique 5 letter words as you can. When you submit a word using the play button, one letter will be frozen in place. Now it's up to you to make the next word using this frozen letter. Type in a word and click the start button to start playing, you have 90 seconds. Good luck!">
+                How does it work?
+            </button>
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="custom-word-container luckiest-guy-regular" id="guess-cont-1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+            <input type="text" class="custom-square-input guess-1" maxlength="1">
+        </div>
+    </div>
+    <div id="end-cont" style="text-align: center">
+        <h4 id="end-msg" class="luckiest-guy-regular custom-outlined-text"></h4>
+    </div>
+    <div id="loading-spinner" class="justify-content-center loading-spinner">
+        <div class="spinner-border" role="status" style="color: #000080">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div id="guess-btn-div" class="row justify-content-center">
+      <button id="guess-btn" class="custom-btn-dimensions btn custom-btn custom-margin luckiest-guy-regular" type="button">
+        Play
+      </button>
+    </div>
+</div>
+
+<script>
+    const userId = "{{ user.id }}"
+</script>
+<script type="module" src="{{ url_for('static', filename='word-games/js/word-rush.js') }}"></script>
+{% endblock %}
