@@ -17,6 +17,18 @@ import {
 
     const gameState = new GameState("wordRush", 0, playBtn, loadingSpinner, userId);
 
-    
+    const wordNodeList = document.querySelectorAll(".guess-1");
+
+    // get all letters -> form string
+    playBtn.addEventListener("click", () => {
+
+        const lettersArr = Array.from(wordNodeList).map(input => input.value);
+
+        console.log(lettersArr);
+    });
+
+    // validate word
+    // freeze letter in place
+    // empty other inputs
 
  });
