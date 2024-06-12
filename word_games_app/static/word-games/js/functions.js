@@ -165,3 +165,64 @@ export class GameState {
         this.playBtn.innerHTML = "play again?";
     }
 }
+
+
+export function runTimer(timerSeconds, timerInterval, timerElement, timerEnd, timerPause=false) {
+
+    clearInterval(timerInterval);
+
+    timerInterval = setInterval(() => {
+        if (timerSeconds > 0 && !timerPause) {
+            timerSeconds -= 1;
+            timerElement.innerText = timerSeconds;
+            // display time left
+        } 
+        else {
+            clearInterval(timerInterval);
+            // end of game
+            if (timerSeconds === 0) {
+               timerEnd();
+            }
+        }
+    }, 1000);
+}
+
+
+export class Timer {
+    constructor(seconds, element, end) {
+        this.seconds = seconds;
+        this.interval = null;
+        this.element = element;
+        this.end = end;
+        this.paused = false;
+    }
+
+    start() {
+
+        // check to make sure there aren't multiple intervals called
+        if (this.interval) {
+            clearInterval(this.interval);
+        }
+
+        this.interval = setInterval(() => {
+            if (this.seconds > 0 && !this.paused) {
+                // display time left
+                this.seconds -= 1;
+                this.element.innerText = this.seconds;
+            } 
+            else if (this.seconds === 0) {
+                // end of game
+                clearInterval(this.interval);
+                this.end();
+            }
+        }, 1000);
+    }
+
+    pause() {
+        this.paused = true;
+    }
+
+    resume () {
+        this.paused = false;
+    }
+}
