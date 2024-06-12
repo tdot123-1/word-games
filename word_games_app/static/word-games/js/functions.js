@@ -195,6 +195,7 @@ export class Timer {
         this.element = element;
         this.end = end;
         this.paused = false;
+        this.running = false;
     }
 
     start() {
@@ -203,6 +204,7 @@ export class Timer {
         if (this.interval) {
             clearInterval(this.interval);
         }
+        this.running = true;
 
         this.interval = setInterval(() => {
             if (this.seconds > 0 && !this.paused) {

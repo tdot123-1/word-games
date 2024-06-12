@@ -95,6 +95,9 @@ def update_game_data():
     if game == "wordGuess":
         if points > score_entry.hs_guess: 
             score_entry.hs_guess = points
+    elif game == "wordRush":
+        if points > score_entry.hs_rush:
+            score_entry.hs_rush = points
     
     db.session.commit()
     
@@ -125,6 +128,16 @@ def check_word_validity():
         else:
             return jsonify({"message": "Guess must be a valid English word",
                             "category": "warning"})
+    elif game == "wordRush":
+        if len(word) != 5:
+            return jsonify({"message": "Word must be 5 letters long",
+                            "category": "warning"})
+        if word_exists(word):
+            return jsonify({"message": f"{word} was a valid word",
+                            "category": "success"})
+        else:
+            return jsonify({"message": "Word must be a valid English word",
+                            "category": "warning"})
         
-    return jsonify({"message": "test"})
+    return jsonify({"message": "test", "category": "danger"})
 

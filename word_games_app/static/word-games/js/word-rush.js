@@ -11,6 +11,8 @@ import {
 
  document.addEventListener("DOMContentLoaded", () => {
 
+    // tell user how many points after end of game
+
     const popover = initPopover();
 
     const loadingSpinner = document.getElementById("loading-spinner");
@@ -21,34 +23,149 @@ import {
 
     const gameState = new GameState("wordRush", 0, playBtn, loadingSpinner, userId);
 
-    const timer = new Timer(90, timerDisplay, timerEnd)
+    const timer = new Timer(90, timerDisplay, timerEnd);
 
-    const pauseBtn = document.getElementById("pause");
-    const resumeBtn = document.getElementById("resume");
+    const wordNodeList = document.querySelectorAll(".guess-1");
+
 
     function timerEnd() {
-        timerDisplay.innerText = "Timer ended";
+        wordNodeList.forEach(input => {
+            input.disabled = true;
+        });
+        gameState.won = true;
+        gameState.gameOver();
     }
     
-    
+
+    const usedWordsList = [];
 
     // get all letters -> form string
     playBtn.addEventListener("click", () => {
 
-        const wordNodeList = document.querySelectorAll(".guess-1");
+        // change button functionality depending on game context
+        if (gameState.ended && !gameState.resendData) {
+            location.reload();
+            return;
+        }
+        else if (gameState.resendData) {
+            gameState.resendData = false;
+            gameState.gameOver();
+            return;
+        }
 
-        const wordArr = Array.from(wordNodeList).map(input => input.value);
+        if (!timer.running) {
+            timer.start();
+        }
+        
+        wordNodeList.forEach(input => {
+            input.disabled = true;
+        });
+
+        const wordArr = Array.from(wordNodeList).map(input => input.value.toLowerCase());
         const wordStr = wordArr.join("");
 
         console.log(wordArr);
         console.log(wordStr);
+        gameState.playBtn.disabled = true;
+        gameState.spinner.style.display = "flex";
+        processWord(wordStr, wordArr);
+        
+    });
+
+
+    wordNodeList.forEach((input, index) => {
+        input.addEventListener("input", () => {
+            let letterInput = input.value;
+
+            if (!/^[a-zA-Z]*$/.test(letterInput)) {
+                input.value = "";
+            }
+            else {
+                let nextIndex = index + 1;
+                while (nextIndex < wordNodeList.length && wordNodeList[nextIndex].disabled) {
+                    nextIndex += 1;
+                }
+                if (nextIndex < wordNodeList.length) {
+                    wordNodeList[nextIndex].focus();
+                }
+            }
+        });
     });
 
     // validate word
-    async function processWord() {
+    async function processWord(wordStr, wordArr) {
+        // pause timer
         
+        timer.pause();
+        try {
+            const validWord = await checkWordValidity(wordStr, "wordRush", "/check-word-validity");
+            // resume timer
+            timer.resume();
+            gameState.spinner.style.display = "none";
+            gameState.playBtn.disabled = false;
+            if (!validWord || usedWordsList.includes(wordStr)) {
+                wordNodeList.forEach((input, index) => {
+                    // empty inputs, except disabled
+                    if (!input.classList.contains("fade-in-green")) {
+                        input.disabled = false;
+                        input.value = "";
+                    }
+                });
+                // check if word is unique
+                if (usedWordsList.includes(wordStr)) {
+                    displayFlashMessage("Word already used", "warning");
+                }
+                return;
+            }
+            // get frozen letter
+            gameState.points += 1;
+            usedWordsList.push(wordStr);
+            freezeLetter(wordArr);
+            return;
+
+        }
+        catch (error) {
+            console.log("Error: ", error);
+            displayFlashMessage(`There was an error: ${error}`, "danger");
+        }
+
     }
+
     // freeze letter in place
+    function freezeLetter(wordArr) {
+
+        let newFrozenIndex = null;
+        let oldFrozenIndex = null;
+
+        wordNodeList.forEach((input, index) => {
+            if (input.classList.contains("fade-in-green")) {
+                oldFrozenIndex = index;
+                input.classList.remove("fade-in-green");
+            }
+            input.value = "";
+            input.disabled = false;
+        });
+
+        do {
+            newFrozenIndex = Math.floor(Math.random() * wordNodeList.length);
+        }
+        while(newFrozenIndex === oldFrozenIndex);
+
+        const frozenLetter = wordArr[newFrozenIndex];
+        wordNodeList[newFrozenIndex].value = frozenLetter;
+        wordNodeList[newFrozenIndex].classList.add("fade-in-green");
+        wordNodeList[newFrozenIndex].disabled = true;
+
+        // set focus
+        for (let i = 0; i < wordNodeList.length; i++) {
+            if (!wordNodeList[i].disabled) {
+                wordNodeList[i].focus();
+                break;
+            }
+        }
+        return;
+    }
+
     // empty other inputs
 
  });

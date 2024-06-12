@@ -167,6 +167,11 @@ table {
     text-shadow: #000080 1px 0 10px;
 }
 
+.timer-box {
+    display: flex;
+    justify-content: center;
+}
+
 
 @media screen and (min-width: 768px) {
     
