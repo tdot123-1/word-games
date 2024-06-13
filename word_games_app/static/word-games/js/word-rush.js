@@ -5,7 +5,6 @@ import {
     scrollPage,
     checkWordValidity,
     GameState,
-    runTimer,
     Timer,
  } from "./functions.js";
 
@@ -20,9 +19,10 @@ import {
     const playBtn = document.getElementById("guess-btn");
     loadingSpinner.style.display = "none";
     const timerDisplay = document.getElementById("timer");
+    const endContainer = document.getElementById("end-msg");
 
     // set game state and timer
-    const gameState = new GameState("wordRush", 0, playBtn, loadingSpinner, userId);
+    const gameState = new GameState("wordRush", 0, playBtn, loadingSpinner, userId, endContainer);
 
     const timer = new Timer(90, timerDisplay, timerEnd);
     // all input fields

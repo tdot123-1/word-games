@@ -123,7 +123,9 @@ export async function checkWordValidity(word, game, endpoint) {
 
 // save properties that all games will share in one class
 export class GameState {
-    constructor(gameName, points, playBtn, spinner, userId) {
+    constructor(gameName, points, playBtn, spinner, userId, 
+        endContainer
+    ) {
         this.gameName = gameName;
         this.ended = false;
         this.won = false;
@@ -132,6 +134,7 @@ export class GameState {
         this.playBtn = playBtn;
         this.spinner = spinner;
         this.userId = userId;
+        this.endContainer = endContainer;
     }
 
     // game over proces will be the same across games
@@ -146,6 +149,8 @@ export class GameState {
                 const statsUpdated = await sendGameData(this.points, this.gameName, this.userId);
                 this.spinner.style.display = "none";
                 this.playBtn.disabled = false;
+                // display end message
+                this.endContainer.innerText = `Wow! You got ${this.points} points!`;
                 // if something went wrong, change button to try re sending data
                 if (!statsUpdated) {
                     this.resendData = true;
@@ -164,27 +169,6 @@ export class GameState {
         this.playBtn.disabled = false;
         this.playBtn.innerHTML = "play again?";
     }
-}
-
-
-export function runTimer(timerSeconds, timerInterval, timerElement, timerEnd, timerPause=false) {
-
-    clearInterval(timerInterval);
-
-    timerInterval = setInterval(() => {
-        if (timerSeconds > 0 && !timerPause) {
-            timerSeconds -= 1;
-            timerElement.innerText = timerSeconds;
-            // display time left
-        } 
-        else {
-            clearInterval(timerInterval);
-            // end of game
-            if (timerSeconds === 0) {
-               timerEnd();
-            }
-        }
-    }, 1000);
 }
 
 

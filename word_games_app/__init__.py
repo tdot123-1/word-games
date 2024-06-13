@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from decouple import config
 
 # define db, db_name
 db = SQLAlchemy()
@@ -10,7 +11,7 @@ DB_NAME = "word-games.db"
 # create app
 def create_app():
     app = Flask(__name__)
-    app.secret_key = "TEMPORARY_KEY"
+    app.secret_key = config("FLASK_SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = f"sqlite:///{DB_NAME}"
     db.init_app(app)
 

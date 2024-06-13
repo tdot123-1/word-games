@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadingSpinner = document.getElementById("loading-spinner");
     const playBtn = document.getElementById("guess-btn");
     loadingSpinner.style.display = "none";
+    const endContainer = document.getElementById("end-msg");
 
     const listOfWords = [ 
         "apple", "brush", "chair", "dance", "eagle", "fable", "grape", "house", "igloo", "joker",
@@ -31,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let guessCount = 0;
 
     // create instance to keep track of game state
-    const gameState = new GameState("wordGuess", 35, playBtn, loadingSpinner, userId)
+    const gameState = new GameState("wordGuess", 35, playBtn, loadingSpinner, userId, endContainer)
 
     // randomly select password from list of words, 
     // get array from password string to use later

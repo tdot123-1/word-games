@@ -170,6 +170,16 @@ table {
 .timer-box {
     display: flex;
     justify-content: center;
+    font-size: 2.5rem;
+    color: #000080;
+}
+
+#end-cont {
+    margin: 2rem 0;
+}
+
+#end-cont h2 {
+    font-size: 2.5rem;
 }
 
 

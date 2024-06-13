@@ -1,9 +1,11 @@
 import os
 from PyDictionary import PyDictionary
+import base64
 
 
 def key_generator():
-    key = os.urandom(24)
+    key_bytes = os.urandom(24)
+    key = base64.urlsafe_b64encode(key_bytes).decode('utf-8')
     return key
 
 
