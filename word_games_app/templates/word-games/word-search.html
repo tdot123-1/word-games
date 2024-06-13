@@ -1,0 +1,71 @@
+{% extends "word-games/layout.html" %}
+
+{% block body %}
+<div class="container-fluid game-page">
+    <div class="row page-header">
+        <div class="col">
+            <h1 class="luckiest-guy-regular custom-outlined-text">WordRush</h1>
+        </div>
+    </div>
+    <div class="row justify-content-center custom-rules-box">
+        <div class="col">
+            <button type="button" class="custom-btn-dimensions btn custom-btn luckiest-guy-regular custom-center" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-title="Find your Words" data-bs-content="The goal is to find as many words as you can within one minute. When you click start, a collection of random letters will appear on the board and the timer will start running. Submit as many words as you can find into the field below, using only the letters you see on screen. After one minute has passed, we will count up your points. Only valid English words with at least 4 letters will be counted. Good luck!">
+                How does it work?
+            </button>
+        </div>
+    </div>
+    <div class="timer-box luckiest-guy-regular">
+        <p><span id="timer">90</span></p>
+    </div>
+    <div class="row justify-content-center">
+        <div class="custom-word-container luckiest-guy-regular">
+            <div class="custom-square-input guess-1">a</div>
+            <div class="custom-square-input guess-1">b</div>
+            <div class="custom-square-input guess-1">c</div>
+            <div class="custom-square-input guess-1">d</div>
+        </div>
+        <div class="custom-word-container luckiest-guy-regular">
+            <div class="custom-square-input guess-1">e</div>
+            <div class="custom-square-input guess-1">f</div>
+            <div class="custom-square-input guess-1">g</div>
+            <div class="custom-square-input guess-1">h</div>
+        </div>
+        <div class="custom-word-container luckiest-guy-regular">
+            <div class="custom-square-input guess-1"></div>
+            <div class="custom-square-input guess-1"></div>
+            <div class="custom-square-input guess-1"></div>
+            <div class="custom-square-input guess-1"></div>
+        </div>
+        <div class="custom-word-container luckiest-guy-regular">
+            <div class="custom-square-input guess-1"></div>
+            <div class="custom-square-input guess-1"></div>
+            <div class="custom-square-input guess-1"></div>
+            <div class="custom-square-input guess-1"></div>
+        </div>
+    </div>
+    <div id="end-cont" style="text-align: center">
+        <h2 id="end-msg" class="luckiest-guy-regular custom-outlined-text"></h2>
+    </div>
+    <div id="loading-spinner" class="justify-content-center loading-spinner" style="display: none">
+        <div class="spinner-border" role="status" style="color: #000080">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+    <div class="word-list">
+        <ul>
+        </ul>
+    </div>
+    <div class="text-input-cont">
+        <input disabled id="text-input" type="text" class="custom-text-input form-control">
+        <button id="guess-btn" class="custom-text-input-btn custom-btn-dimensions btn custom-btn luckiest-guy-regular" type="button">
+            Play
+        </button>
+    </div>
+</div>
+
+
+<script>
+    const userId = "{{ user.id }}"
+</script>
+<script type="module" src="{{ url_for('static', filename='word-games/js/word-search.js') }}"></script>
+{% endblock %}

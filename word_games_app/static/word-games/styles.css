@@ -124,6 +124,14 @@ body {
     border-radius: 15px;
 }
 
+div .custom-square-input {
+    width: calc(20% - 3px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
 .custom-word-container {
     display: flex;
     justify-content: center;
@@ -181,6 +189,29 @@ table {
 #end-cont h2 {
     font-size: 2.5rem;
 }
+
+.text-input-cont {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.custom-text-input {
+    height: 3rem;
+    font-size: 1.7rem;
+}
+
+.custom-text-input-btn {
+    max-width: 30%;
+}
+
+.word-list > ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 
 
 @media screen and (min-width: 768px) {

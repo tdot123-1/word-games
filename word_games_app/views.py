@@ -26,6 +26,10 @@ def word_rush():
     return render_template("word-games/word-rush.html", user=current_user)
 
 
+@views.route("/word-search")
+def word_search():
+    return render_template("word-games/word-search.html", user=current_user)
+
 
 @views.route("/high-scores")
 def high_scores():
