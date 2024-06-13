@@ -13,21 +13,22 @@ import {
 
     // tell user how many points after end of game
 
+    // bootstrap popover
     const popover = initPopover();
-
+    // dom elements
     const loadingSpinner = document.getElementById("loading-spinner");
     const playBtn = document.getElementById("guess-btn");
     loadingSpinner.style.display = "none";
-
     const timerDisplay = document.getElementById("timer");
 
+    // set game state and timer
     const gameState = new GameState("wordRush", 0, playBtn, loadingSpinner, userId);
 
     const timer = new Timer(90, timerDisplay, timerEnd);
-
+    // all input fields
     const wordNodeList = document.querySelectorAll(".guess-1");
 
-
+    // when timer ends, disable all input fields, end game
     function timerEnd() {
         wordNodeList.forEach(input => {
             input.disabled = true;
@@ -36,11 +37,11 @@ import {
         gameState.gameOver();
     }
     
-
+    // keep track of words used
     const usedWordsList = [];
 
-    // get all letters -> form string
-    playBtn.addEventListener("click", () => {
+    // play button to send word
+    gameState.playBtn.addEventListener("click", () => {
 
         // change button functionality depending on game context
         if (gameState.ended && !gameState.resendData) {
@@ -56,16 +57,15 @@ import {
         if (!timer.running) {
             timer.start();
         }
-        
+        // disable all input fields on click
         wordNodeList.forEach(input => {
             input.disabled = true;
         });
-
+        // get array from input values, get string from array
         const wordArr = Array.from(wordNodeList).map(input => input.value.toLowerCase());
         const wordStr = wordArr.join("");
 
-        console.log(wordArr);
-        console.log(wordStr);
+        // disable play button, display spinner, start word process
         gameState.playBtn.disabled = true;
         gameState.spinner.style.display = "flex";
         processWord(wordStr, wordArr);
@@ -73,14 +73,16 @@ import {
     });
 
 
+    // attach eventlistener to each input field
     wordNodeList.forEach((input, index) => {
         input.addEventListener("input", () => {
             let letterInput = input.value;
-
+            // validate that it is a word
             if (!/^[a-zA-Z]*$/.test(letterInput)) {
                 input.value = "";
             }
             else {
+                // set focus on next available field
                 let nextIndex = index + 1;
                 while (nextIndex < wordNodeList.length && wordNodeList[nextIndex].disabled) {
                     nextIndex += 1;

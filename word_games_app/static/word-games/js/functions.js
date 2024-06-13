@@ -204,6 +204,7 @@ export class Timer {
         if (this.interval) {
             clearInterval(this.interval);
         }
+        // remember that timer is currently running
         this.running = true;
 
         this.interval = setInterval(() => {
