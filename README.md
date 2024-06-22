@@ -51,4 +51,4 @@ All the games are done in JavaScript, all the backend stuff is done in Python.
 [Live demonstration](link-to-video)
 
 
-[Github repository](link-to-repo)
+[Github repository](https://github.com/tdot123-1/word-games)
