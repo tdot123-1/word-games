@@ -32,10 +32,12 @@ Each user's total points (for all games) and high scores per game are saved in a
 
 - **CSS**
 
+- **Bootstrap**
+
 
 This app was made with the Flask web framework for Python.
 
-For storing user information and high scores I used sqlalchemy
+For storing user information and high scores I used sqlalchemy.
 
 To validate words I made use of the PyDictionary library, which determines if a submitted word is an existing english word or not.
 

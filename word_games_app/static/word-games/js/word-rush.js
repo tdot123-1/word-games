@@ -130,7 +130,6 @@ import {
             console.log("Error: ", error);
             displayFlashMessage(`There was an error: ${error}`, "danger");
         }
-
     }
 
     // freeze letter in place
@@ -167,7 +166,5 @@ import {
         }
         return;
     }
-
-    // empty other inputs
 
  });

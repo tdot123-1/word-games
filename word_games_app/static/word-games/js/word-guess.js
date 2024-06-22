@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // randomly select password from list of words, 
     // get array from password string to use later
     const password = listOfWords[Math.floor(Math.random() * listOfWords.length)];
-    console.log(password);
+    //console.log(password);
     const passwordArr = password.split("");
 
     // hide all input squares at start of game, display only first line
