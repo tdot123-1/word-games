@@ -105,7 +105,7 @@ body {
 }
 
 .game-page h1 {
-    font-size: 4rem;
+    font-size: 3.5rem;
 }
 
 .custom-rules-box .custom-btn-dimensions {
@@ -255,6 +255,19 @@ table {
 
     .custom-square-input {
         width: 10%;
+    }
+
+    .custom-rules-box {
+        margin-bottom: 0.5rem;
+    }
+
+    .custom-text-input {
+        height: 2rem;
+    }
+
+    .letters-grid {
+        width: 60%;
+        margin: auto;
     }
 
 }

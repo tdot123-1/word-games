@@ -1,3 +1,6 @@
+# Word Games
+
+
 This was an early project I made to practise using the Flask framework for Python.
 It is a web application where users can create an account and log in, after which they will have acces to three different games.
 
@@ -15,8 +18,35 @@ As with the other games, only valid words are accepted and points are counted af
 
 Each user's total points (for all games) and high scores per game are saved in a database and displayed on the 'High scores' page.
 
-To validate words I made use of the PyDictionary library, which determines if an inputted word is an existing english word or not.
+## Technologies
+
+- **Python**
+
+- **Flask**
+
+- **sqlalchemy**
+
+- **JavaScript**
+
+- **HTML**
+
+- **CSS**
+
+
+This app was made with the Flask web framework for Python.
+
+For storing user information and high scores I used sqlalchemy
+
+To validate words I made use of the PyDictionary library, which determines if a submitted word is an existing english word or not.
 
 This was also my first attempt at styling a webpage with Bootstrap, which is why the html looks somewhat messy.
 
 All the games are done in JavaScript, all the backend stuff is done in Python.
+
+
+## Links
+
+[Live demonstration](link-to-video)
+
+
+[Github repository](link-to-repo)
