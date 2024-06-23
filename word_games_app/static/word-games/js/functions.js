@@ -166,7 +166,11 @@ export class GameState {
             }
         }
         // if stats don't need to be updated, set up button accordingly
+        else {
+            this.endContainer.innerText = `You failed to guess the word...`;
+        }
         this.playBtn.disabled = false;
+        scrollPage("bottom");
         this.playBtn.innerHTML = "play again?";
     }
 }

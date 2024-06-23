@@ -1,6 +1,14 @@
 import os
-from PyDictionary import PyDictionary
 import base64
+from nltk.corpus import wordnet as wn
+
+
+# new word validation using nltk
+def word_exists(word):
+    if wn.synsets(word):
+        return True
+    
+    return False
 
 
 def key_generator():
@@ -45,11 +53,3 @@ def validate_registration(password1, password2, username):
 
     return errors
 
-
-def word_exists(word):
-    dictionary = PyDictionary()
-    meaning = dictionary.meaning(word)
-    if meaning is not None:
-        return True
-
-    return False

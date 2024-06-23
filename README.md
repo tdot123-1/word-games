@@ -1,10 +1,14 @@
 # Word Games
 
 
-This was an early project I made to practise using the Flask framework for Python.
-It is a web application where users can create an account and log in, after which they will have acces to three different games.
+![App icon](word_games_app\static\word-games\images\favicon\android-chrome-192x192.png)
 
-In the first game the user has 6 attempts to guess a randomly selected word from a list. Only valid english words are accepted as guesses. 
+
+## About the project
+This was an early project I made to practise using the Flask framework for Python.
+It is a web application where users can create an account and log in, after which they will have access to three different games.
+
+In the first game the user has 6 attempts to guess a randomly selected word. Only valid english words are accepted as guesses. 
 On each guess the user receives feedback for which letters are in the secret word. 
 Similar to the game Wordle, a letter will turn either green or yellow depending on if the letter is correctly guessed and in the right position or not.
 
@@ -26,6 +30,8 @@ Each user's total points (for all games) and high scores per game are saved in a
 
 - **sqlalchemy**
 
+- **NLTK**
+
 - **JavaScript**
 
 - **HTML**
@@ -39,7 +45,7 @@ This app was made with the Flask web framework for Python.
 
 For storing user information and high scores I used sqlalchemy.
 
-To validate words I made use of the PyDictionary library, which determines if a submitted word is an existing english word or not.
+To validate words I made use of Natural Language Toolkit, with the WordNet Interface it is  determined if a submitted word is an existing english word or not.
 
 This was also my first attempt at styling a webpage with Bootstrap, which is why the html looks somewhat messy.
 
@@ -48,7 +54,7 @@ All the games are done in JavaScript, all the backend stuff is done in Python.
 
 ## Links
 
-[Live demonstration](link-to-video)
+[Live demonstration](https://youtu.be/52I9I3DDTe8)
 
 
 [Github repository](https://github.com/tdot123-1/word-games)
