@@ -1,7 +1,7 @@
 # Word Games
 
 
-![App icon](word_games_app\static\word-games\images\favicon\android-chrome-192x192.png)
+![App icon](word_games_app/static/word-games/images/favicon/android-chrome-192x192.png)
 
 
 ## About the project
