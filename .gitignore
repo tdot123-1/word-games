@@ -5,3 +5,4 @@
 *.env
 /myenv/
 /.vscode/
+/nltk_data/
