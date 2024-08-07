@@ -1,8 +1,10 @@
 *.db
+/instance/
 /__pychache__/
 /word_games_app/__pychache__/
 *.pyc 
 *.env
 /myenv/
 /.vscode/
+/word_games_app/nltk_data/
 /nltk_data/
