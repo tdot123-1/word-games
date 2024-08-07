@@ -16,6 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
     loadingSpinner.style.display = "none";
     const endContainer = document.getElementById("end-msg");
 
+    // should probably be hidden somehow or moved to backend
+    // will be hidden in future update, for the moment ->
+    // hope/trust no one looks at this list
     const listOfWords = [ 
         "apple", "brush", "chair", "dance", "eagle", "fable", "grape", "house", "igloo", "joker",
         "knife", "lemon", "mango", "noble", "ocean", "piano", "queen", "rainy", "sugar", "table", 

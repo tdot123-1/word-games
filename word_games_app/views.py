@@ -5,7 +5,7 @@ from flask_login import login_required, current_user
 from .models import User, Scores
 from sqlalchemy import desc
 from . import db
-from utils import word_exists
+from utils import word_exists, select_random_word
 
 # specify blueprint for views routes
 views = Blueprint("views", __name__)
@@ -158,3 +158,12 @@ def check_word_validity():
         
     return jsonify({"message": "test", "category": "danger"})
 
+
+# ! currently not used
+# for future update: select word on backend, 
+# find a way to use it in frontend without exposing it
+@views.route("/get-word")
+def get_word():
+    random_word = select_random_word()
+
+    return jsonify({"word": random_word})

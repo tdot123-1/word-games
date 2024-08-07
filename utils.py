@@ -1,6 +1,7 @@
 import os
 import base64
 from nltk.corpus import wordnet as wn
+import random
 
 
 # new word validation using nltk
@@ -53,3 +54,23 @@ def validate_registration(password1, password2, username):
 
     return errors
 
+
+# ! currently not used
+# for future update: select word on backend and somehow use on frontend without exposing it
+def select_random_word():
+    list_of_words = [
+        "apple", "brush", "chair", "dance", "eagle", "fable", "grape", "house", "igloo", "joker",
+        "knife", "lemon", "mango", "noble", "ocean", "piano", "queen", "rainy", "sugar", "table", 
+        "uncle", "vivid", "whale", "young", "zebra", "alarm", "blink", "chess", "dough", "elbow", 
+        "flame", "giant", "hatch", "ivory", "jelly", "knots", "lunch", "marsh", "novel", "oasis", 
+        "pilot", "quiet", "ruler", "skate", "thorn", "ultra", "winds", "yield", "zesty", "agile", 
+        "baker", "cliff", "drift", "eager", "flock", "glory", "happy", "index", "jolly", "kiosk", 
+        "lunar", "magic", "navel", "otter", "peach", "quest", "river", "sweep", "tiger", "under", 
+        "vibes", "waltz","phone", "yacht", "adapt", "beast", "cloud", "dwarf", "erase", "frisk", 
+        "gravy","honor", "image", "jumps", "knock", "lunar", "medal", "nurse", "olive", "peace", 
+        "quick", "round", "salty", "toast", "unity", "vault", "wrist", "house", "young", "birds",
+    ]
+
+    random_word = random.choice(list_of_words)
+    print(f"selected word: {random_word}")
+    return random_word
