@@ -12,6 +12,7 @@ MarkupSafe==2.1.5
 nltk==3.8.1
 packaging==24.1
 pip-autoremove==0.10.0
+psycopg2-binary==2.9.9
 python-decouple==3.8
 regex==2024.5.15
 setuptools==70.1.0
