@@ -1,4 +1,5 @@
 # Word Games
+[Visit the website!](https://word-games.adaptable.app/)
 
 
 ![App icon](word_games_app/static/word-games/images/favicon/android-chrome-192x192.png)
@@ -53,6 +54,8 @@ All the games are done in JavaScript, all the backend stuff is done in Python.
 
 
 ## Links
+
+[Website link](https://word-games.adaptable.app/)
 
 [Live demonstration](https://youtu.be/52I9I3DDTe8)
 
