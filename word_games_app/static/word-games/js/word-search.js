@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // validate only allowed letters were used
     const allowedWordsArr = uniqueWords.filter((word) =>
-      validateLettersUsed(word)
+      validateLettersUsed(word.toLowerCase())
     );
 
     console.log("words validated: ", allowedWordsArr);
@@ -185,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     // add word to submitted array
     const wordStr = textInput.value;
-    submittedWords.push(wordStr);
+    submittedWords.push(wordStr.toLowerCase());
 
     // empty input field, set focus, disable btn
     textInput.value = "";
