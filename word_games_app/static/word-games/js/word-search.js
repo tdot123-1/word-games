@@ -51,10 +51,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const uniqueWords = [...new Set(submittedWords)];
 
     // validate only allowed letters were used
-    const wordsAllowed = uniqueWords.filter(word => validateLettersUsed(word))
+    const allowedWordsArr = uniqueWords.filter((word) =>
+      validateLettersUsed(word)
+    );
+
+    console.log("words validated: ", allowedWordsArr);
 
     // validate each word
-    const wordsValidated = await countPoints(uniqueWords);
+    const wordsValidated = await countPoints(allowedWordsArr);
     gameState.spinner.style.display = "none";
     if (wordsValidated) {
       gameState.gameOver();
@@ -86,30 +90,17 @@ document.addEventListener("DOMContentLoaded", () => {
     ["p", "a", "c", "e", "m", "d"],
   ];
 
-  /*
-  function checkLetter(letter, lettersObj) {
-    if (letter in lettersObj) {
-      if (lettersObj[letter] > 0) {
-        lettersObj[letter] -= 1;
-        return true;
-      }
-    }
-    return false;
-  }
-*/
-
+  // new way of validation ->
+  // in stead of preventing certain keys, validate each submitted word after timer end
+  // check if word only contains letters that were allowed
   function validateLettersUsed(word) {
     allowedLettersCount = getAllowedLettersCount(allowedLetters);
     for (let i = 0; i < word.length; i++) {
-        if (!checkAllowedLetter(word[i])) {
-            return false
-        }
+      if (!checkAllowedLetter(word[i])) {
+        return false;
+      }
     }
     return true;
-  }
-
-  function validateAllowedWords(wordsArr) {
-    // return array where all words passed through validateLettersUsed() succesfully
   }
 
   // validate each word from array
@@ -221,19 +212,21 @@ document.addEventListener("DOMContentLoaded", () => {
     // ensure only letters are inputted
     if (!/^[a-zA-Z]*$/.test(lastChar)) {
       textInput.value = value.slice(0, -1);
-    } else {
+    }
+    /*
+    else {
       // remove last inputted char if it is not part of the allowed letters
       if (!checkAllowedLetter(lastChar)) {
         textInput.value = value.slice(0, -1);
       }
     }
-
+    
     // handle backspace
     if (value.length < previousInputValue.length) {
       const deletedLetter = previousInputValue.slice(-1);
       handleBackspace(deletedLetter);
     }
-
+    */
     // allow only words more than 4 letters to be submitted
     if (textInput.value.length > 3) {
       gameState.playBtn.disabled = false;
